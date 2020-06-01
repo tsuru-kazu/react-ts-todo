@@ -1,31 +1,29 @@
-import React, {ReactFragment} from 'react';
-import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import firebase from "firebase";
+import React, { useState } from "react";
+import TaskInput from "./components/TaskInput";
+import TaskList from "./components/TaskList";
+import { Task } from "./components/Types"
+import "./App.css";
 
-//screens
-import Home from './screens/Home';
-import Profile from './screens/Profile';
-import SignInOrUp from './screens/SignInOrUp';
-import SignUp from './screens/SignUp';
-
-import Auth from './Auth';
+const initialState: Task[] = [
+    {
+        id: 2,
+        title: '次にやるやつ',
+        done: false
+    },{
+        id: 1,
+        title: 'はじめにやるやつ',
+        done: true
+    }
+]
 
 const App: React.FC = () => {
+    const [tasks, setTasks] = useState(initialState)
+
     return (
-        <Router>
-            <Switch>
-                <Route exact path="/signin" component={SignInOrUp}/>
-                <Route exact path="/signup" component={SignUp} />
-                <Auth>
-                    <Switch>
-                        <Route exact path="/" component={Home} />
-                        <Route exact path="/profile" component={Profile} />
-                        <Route render={() => <p>not found.</p>} />
-                    </Switch>
-                </Auth>
-            </Switch>
-        </Router>
+        <div>
+            <TaskInput setTasks={setTasks} tasks={tasks} />
+            <TaskList setTasks={setTasks} tasks={tasks} />
+        </div>
     )
 }
 
